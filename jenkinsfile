@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'sample-node-app'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    dockerImage = docker.build("${DOCKER_IMAGE}")
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                // Add your test commands here
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    dockerImage.run("-p 3000:3000")
+                }
+            }
+        }
+    }
+}
